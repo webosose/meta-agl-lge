@@ -1,0 +1,10 @@
+System User::App::Browser rwxa--
+System User::Pkg::Browser rwxat-
+User::App::Browser System -wx---
+User::App::Browser System::Shared r-x---
+User::App::Browser System::Run rwxat-
+User::App::Browser System::Log rwxa--
+User::App::Browser _ -----l
+User::App::Browser User::Home r-x--l
+User::App::Browser User::App-Shared rwxat-
+User::App::Browser User::Pkg::Browser rwxat-

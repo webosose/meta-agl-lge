@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="chromium53-browser" version="0.1">
+  <name>Browser</name>
+  <icon src="icon.svg"/>
+  <content src="/opt/chromium53/chrome" type="application/x-executable"/>
+  <description>Chromium web browser</description>
+  <author>Jose Dapena Paz &lt;jose.dapena@lge.com&gt;</author>
+  <license>BSD</license>
+</widget>
