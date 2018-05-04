@@ -12,7 +12,6 @@ PACKAGES = "\
 ALLOW_EMPTY_${PN} = "1"
 
 PREFERRED_PROVIDER_virtual/webruntime = "wam"
-EXTRA_APPS = ""
 
 RDEPENDS_${PN} += "\
     packagegroup-agl-image-ivi \
@@ -20,7 +19,7 @@ RDEPENDS_${PN} += "\
 
 # add packages for demo platform (include demo apps) here
 RDEPENDS_${PN} += " \
-    packagegroup-agl-demo \
+    packagegroup-agl-demo-platform \
     "
 
 # add packages for OpenIVI-HTML5 demo
