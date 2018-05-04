@@ -15,4 +15,4 @@ DEPENDS += "af-binder af-main-native chromium53"
 
 inherit cmake aglwgt
 
-RDEPENDS_${PN} += "chromium53-browser"
+RDEPENDS_${PN} += "chromium53-browser runxdg"
