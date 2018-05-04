@@ -8,10 +8,6 @@ DEPENDS_append = " af-main-native"
 DEPENDS_append = " af-binder"
 
 SRC_URI = "git://gpro.lgsvl.com/webos-pro/${PN}.git;branch=@webosose1.agl;protocol=ssh"
-#AGL packaging files
-SRC_URI += "file://browser.afm"
-SRC_URI += "file://browser.service"
-SRC_URI += "file://browser.smack.accesses"
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
 
@@ -169,20 +165,6 @@ configure_browser_settings() {
     echo "${WINDOW_SIZE}" > ${D_DIR}/window_size_conf
 }
 
-AFM_INSTALL_DIR ?= "/var/local/lib/afm/applications/${BROWSER_APPLICATION}/0.1"
-SMACK_ACCESSES_DIR ?= "/etc/smack/accesses.d"
-SYSTEMD_USER_DIR ?= "/var/local/lib/systemd/user"
-
-agl_deploy() {
-   install -d ${D}${AFM_INSTALL_DIR}
-   cp ${WORKDIR}/browser.afm ${D}${AFM_INSTALL_DIR}/config.xml
-   install -d -m 0775 ${D}${SYSTEMD_USER_DIR}
-   cp ${WORKDIR}/browser.service ${D}${SYSTEMD_USER_DIR}/afm-appli-chromium53-browser@0.1.service
-   install -d ${D}${SMACK_ACCESSES_DIR}
-   cp ${WORKDIR}/browser.smack.accesses ${D}${SMACK_ACCESSES_DIR}/app_chromium53-browser
-
-}
-
 install_chromium_browser() {
     D_DIR=${D}${BROWSER_APPLICATION_DIR}
     install -d ${D_DIR}
@@ -200,8 +182,6 @@ install_chromium_browser() {
     fi
 
     configure_browser_settings
-
-    agl_deploy
 }
 
 do_install() {
