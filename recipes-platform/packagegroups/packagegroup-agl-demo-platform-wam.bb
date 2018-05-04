@@ -24,6 +24,6 @@ RDEPENDS_${PN} += " \
 
 # add packages for OpenIVI-HTML5 demo
 RDEPENDS_${PN} += " \
-    chromium53-browser \
+    chromium53-browser-service \
     wam \
     "
