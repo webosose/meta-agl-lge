@@ -1,3 +1,3 @@
 BBLAYERS =+ " \
-   ${METADIR}/meta-lge-agl \
+   ${METADIR}/meta-agl-lge \
 "
