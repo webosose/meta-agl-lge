@@ -1,36 +1,34 @@
-From 9faea903a33a463178811d97562a8532c92b8493 Mon Sep 17 00:00:00 2001
+From 1e7ab90e86e63d29f670277356b36d75e3943b12 Mon Sep 17 00:00:00 2001
 From: Jani Hautakangas <jani.hautakangas@lge.com>
-Date: Wed, 9 May 2018 00:53:10 +0300
+Date: Wed, 9 May 2018 21:01:03 +0300
 Subject: [PATCH] Homescreen-2017 landscape support
 
 ---
- homescreen/qml/Home.qml           | 25 +++++-------------------
+ homescreen/qml/Home.qml           | 22 ++-----------
  homescreen/qml/MediaArea.qml      |  2 +-
  homescreen/qml/MediaAreaBlank.qml |  2 +-
  homescreen/qml/MediaAreaMusic.qml |  2 +-
  homescreen/qml/MediaAreaRadio.qml |  2 +-
- homescreen/qml/ShortcutArea.qml   |  6 +++---
- homescreen/qml/StatusArea.qml     | 40 +++++++++++++++++++--------------------
- homescreen/qml/TopArea.qml        | 10 +++++-----
- homescreen/qml/main.qml           | 21 +++++++-------------
+ homescreen/qml/ShortcutArea.qml   |  6 ++--
+ homescreen/qml/StatusArea.qml     | 40 +++++++++++------------
+ homescreen/qml/TopArea.qml        | 10 +++---
+ homescreen/qml/main.qml           | 67 ++++++++++++++++++---------------------
  homescreen/src/main.cpp           |  2 +-
- 10 files changed, 45 insertions(+), 67 deletions(-)
+ 10 files changed, 66 insertions(+), 89 deletions(-)
 
 diff --git a/homescreen/qml/Home.qml b/homescreen/qml/Home.qml
-index 5d54093..f875bae 100644
+index 5d54093..ead22c2 100644
 --- a/homescreen/qml/Home.qml
 +++ b/homescreen/qml/Home.qml
-@@ -22,29 +22,20 @@ Item {
+@@ -22,7 +22,6 @@ Item {
      id: root
  
      Image {
 -        y: 0
          anchors.fill: parent
--        anchors.topMargin: -218
-+        anchors.topMargin: -215
+         anchors.topMargin: -218
          anchors.bottomMargin: -215
-+        anchors.leftMargin: -180
-         source: './images/AGL_HMI_Blue_Background_Car-01.png'
+@@ -30,21 +29,12 @@ Item {
      }
  
      property int pid: -1
@@ -55,7 +53,7 @@ index 5d54093..f875bae 100644
          cellWidth: 320
          cellHeight: 320
          interactive: false
-@@ -61,12 +52,6 @@ Item {
+@@ -61,12 +51,6 @@ Item {
              property string currentId: ''
              property int newIndex: -1
              property int index: grid.indexAt(loc.mouseX, loc.mouseY)
@@ -251,57 +249,88 @@ index 9cff3ed..db78f50 100644
      }
  
 diff --git a/homescreen/qml/main.qml b/homescreen/qml/main.qml
-index 8417de0..3c4c281 100644
+index 8417de0..1582ec4 100644
 --- a/homescreen/qml/main.qml
 +++ b/homescreen/qml/main.qml
-@@ -30,25 +30,25 @@ Window {
+@@ -23,51 +23,44 @@ import HomeScreen 1.0
+ Window {
+     visible: true
+     flags: Qt.FramelessWindowHint
+-    width: container.width * container.scale
+-    height: container.height * container.scale
++    width: 1920
++    height: 1080
++    color: "#0E838C"
+     title: 'HomeScreen'
+ 
      Image {
-         id: container
-         anchors.centerIn: parent
+-        id: container
+-        anchors.centerIn: parent
 -        width: 1080
 -        height: 1920
-+        width: 1920
-+        height: 1080
-         scale: 1.0
+-        scale: 1.0
++        anchors.fill: parent
++        anchors.leftMargin: 180
++        anchors.topMargin: -218
++        anchors.bottomMargin: -215
          source: './images/AGL_HMI_Blue_Background_NoCar-01.png'
++    }
  
 -        ColumnLayout {
-+        RowLayout {
-             anchors.fill: parent
-             spacing: 0
-             TopArea {
-                 id: topArea
+-            anchors.fill: parent
+-            spacing: 0
+-            TopArea {
+-                id: topArea
 -                Layout.fillWidth: true
 -                Layout.preferredHeight: 218
-+                Layout.fillHeight: true
-+                Layout.preferredWidth: 180
-             }
- 
-             Item {
-                 id: applicationArea
-                 Layout.fillWidth: true
-                 Layout.fillHeight: true
--                Layout.preferredHeight: 1920 - 218 - 215
-+                Layout.preferredWidth: 1920 - 180
- 
-                 visible: false
-             }
-@@ -57,17 +57,10 @@ Window {
-                 id: appLauncherAreaLauncher
-                 Layout.fillWidth: true
-                 Layout.fillHeight: true
--                Layout.preferredHeight: 1920 - 218 - 215
-+                Layout.preferredWidth: 1920 - 180
-                 visible: true
-                 z: -1
-             }
+-            }
 -
+-            Item {
+-                id: applicationArea
+-                Layout.fillWidth: true
+-                Layout.fillHeight: true
+-                Layout.preferredHeight: 1920 - 218 - 215
++    RowLayout {
++        anchors.fill: parent
++        spacing: 0
++        TopArea {
++            id: topArea
++            Layout.fillHeight: true
++            Layout.preferredWidth: 180
++        }
+ 
+-                visible: false
+-            }
++        Item {
++            id: applicationArea
++            Layout.fillWidth: true
++            Layout.fillHeight: true
++            Layout.preferredWidth: 1920 - 180
+ 
+-            Home {
+-                id: appLauncherAreaLauncher
+-                Layout.fillWidth: true
+-                Layout.fillHeight: true
+-                Layout.preferredHeight: 1920 - 218 - 215
+-                visible: true
+-                z: -1
+-            }
++            visible: false
++        }
+ 
 -            MediaArea {
 -                id: mediaArea
 -                Layout.fillWidth: true
 -                Layout.fillHeight: true
 -                Layout.preferredHeight: 215
 -            }
++        Home {
++            id: appLauncherAreaLauncher
++            Layout.fillWidth: true
++            Layout.fillHeight: true
++            Layout.preferredWidth: 1920 - 180
++            visible: true
++            z: -1
          }
      }
  }
