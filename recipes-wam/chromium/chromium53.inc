@@ -7,7 +7,7 @@ DEPENDS_append = " af-main-native"
 # for bindings  af-binder is required.
 DEPENDS_append = " af-binder"
 
-SRC_URI = "git://gpro.lgsvl.com/webos-pro/${PN}.git;branch=@webosose1.agl;protocol=ssh"
+SRC_URI = "git://github.com/webosose/${PN}.git;branch=@1.agl;protocol=https"
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
 
