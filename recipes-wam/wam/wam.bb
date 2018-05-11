@@ -9,6 +9,9 @@ DEPENDS = "qtbase glib-2.0 chromium53"
 
 PR="r0"
 
+PROVIDES += "virtual/webruntime"
+RPROVIDES_${PN} += "virtual/webruntime"
+
 SRC_URI = "git://github.com/webosose/${PN}.git;branch=@1.agl;protocol=https"
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
@@ -26,6 +29,7 @@ do_install_append() {
     install -v -m 644 ${S}/files/launch/WebAppMgr.service ${D}${systemd_system_unitdir}/WebAppMgr.service
     install -d ${D}${sysconfdir}/default/
     install -v -m 644 ${S}/files/launch/WebAppMgr.env ${D}${sysconfdir}/default/WebAppMgr.env
+    ln -snf WebAppMgr ${D}${bindir}/web-runtime
 }
 
 pkg_postinst_${PN}_append() {
