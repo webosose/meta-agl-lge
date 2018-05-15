@@ -1,14 +1,14 @@
-From cec822b6b73109727c2e5b64339a1111feefdf12 Mon Sep 17 00:00:00 2001
+From 2912473fd9ba9b01fad8d2bde9b7147a41c0de34 Mon Sep 17 00:00:00 2001
 From: Jani Hautakangas <jani.hautakangas@lge.com>
-Date: Wed, 9 May 2018 09:09:47 +0300
+Date: Tue, 15 May 2018 20:06:44 +0300
 Subject: [PATCH] Layer config landscape support
 
 ---
- layers.json | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ layers.json | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/layers.json b/layers.json
-index 8a04d7b..8cf5113 100644
+index 8a04d7b..5aacef9 100644
 --- a/layers.json
 +++ b/layers.json
 @@ -11,7 +11,7 @@
@@ -20,7 +20,7 @@ index 8a04d7b..8cf5113 100644
           "comment": "Single BackGround layer map for the Navigation, Radio and MediaPlayer"
        },
        {
-@@ -25,7 +25,7 @@
+@@ -25,9 +25,16 @@
           "role": "Music|Video|WebBrowser|MediaPlayer|Radio|Phone|Navigation|HVAC|Settings|Dashboard|POI|Mixer",
           "name": "apps",
           "layer_id": 1001,
@@ -28,7 +28,16 @@ index 8a04d7b..8cf5113 100644
 +         "area": { "type": "rect", "rect": { "x": 180, "y": 0, "width": -181, "height": -1 } },
           "comment": "Range of IDs that will always be placed on layer 1001, negative rect values are interpreted as output_size.dimension - $value"
        },
++      {
++         "role": "^WebApp.*",
++         "name": "webapps",
++         "layer_id": 1002,
++         "area": { "type": "rect", "rect": { "x": 180, "y": 0, "width": -181, "height": -1 } },
++         "comment": "Range of IDs that will always be placed on layer 1002, negative rect values are interpreted as output_size.dimension - $value"
++      },
        {
+          "role": "^OnScreen.*",
+          "name": "popups",
 -- 
 2.14.1
 
