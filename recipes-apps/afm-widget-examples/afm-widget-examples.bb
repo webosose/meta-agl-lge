@@ -10,7 +10,10 @@ PR = "r0"
 SRC_URI += "git://github.com/iotbzh/afm-widget-examples.git;branch=master"
 SRC_URI[md5sum] = "73b5290664d82b97d800fc1d24dd70fc"
 
-SRC_URI += "file://hvac-enact.wgt"
+SRC_URI += " \
+    file://hvac-enact.wgt \
+    file://youtube-agl.wgt \
+"
 
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
@@ -22,5 +25,6 @@ do_aglwgt_package()  {
   cp ${S}/memory-match.wgt ${B}/package/memory-match.wgt
   cp ${S}/annex.wgt ${B}/package/annex.wgt
   cp ${WORKDIR}/hvac-enact.wgt ${B}/package/hvac-enact.wgt
+  cp ${WORKDIR}/youtube-agl.wgt ${B}/package/youtube-agl.wgt
 }
 
