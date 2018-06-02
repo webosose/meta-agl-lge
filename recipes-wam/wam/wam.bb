@@ -30,6 +30,8 @@ do_install_append() {
     install -d ${D}${sysconfdir}/default/
     install -v -m 644 ${S}/files/launch/WebAppMgr.env ${D}${sysconfdir}/default/WebAppMgr.env
     ln -snf WebAppMgr ${D}${bindir}/web-runtime
+    install -d ${D}${sysconfdir}/systemd/system/multi-user.target.wants/
+    ln -snf /lib/systemd/system/WebAppMgr.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/WebAppMgr.service
 }
 
 pkg_postinst_${PN}_append() {
