@@ -14,7 +14,7 @@ Add this library with feature 'agl-demo-wam'
 1. Fetch AGL eel with repo tool.
 
 ```bash
-repo init -b eel -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+repo init -b eel -m eel_5.0.3.xml -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
 repo sync
 ```
 
