@@ -28,6 +28,22 @@ I.e. for Minnowboard:
 source meta-agl/scripts/aglsetup.sh -m intel-corei7-64 -b build agl-devel agl-demo agl-appfw-smack agl-netboot agl-demo-wam
 ```
 
+I.e. for Renesas R-car M3 board:
+
+```bash
+source meta-agl/scripts/aglsetup.sh -m m3ulcb -b build agl-devel agl-demo agl-appfw-smack agl-netboot agl-demo-wam
+```
+
+Please note that the environment requires R-car M3 drivers to be placed into the $HOME/Downloads folder.
+The following drivers are required by the AGL eel branch:
+
+```
+R-Car_Gen3_Series_Evaluation_Software_Package_for_Linux-weston2-20170904.zip
+R-Car_Gen3_Series_Evaluation_Software_Package_of_Linux_Drivers-weston2-20170904.zip
+```
+
+The drivers can be downloaded from https://www.renesas.com/en-us/solutions/automotive/rcar-demoboard-2.html.
+
 4. Build the target agl-demo-platform-wam
 
 ```bash
@@ -40,6 +56,7 @@ Supported Machines
 Reference hardware:
 
 * Minnowboard
+* Renesas R-car M3 board
 
 Layer dependencies
 ------------------
