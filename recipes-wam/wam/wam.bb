@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 inherit qmake5
 
-DEPENDS = "qtbase glib-2.0 chromium53 wayland-ivi-extension virtual/libhomescreen libwindowmanager"
+DEPENDS = "qtbase glib-2.0 chromium53 wayland-ivi-extension libhomescreen libwindowmanager"
 
 PR="r0"
 
@@ -13,6 +13,9 @@ PROVIDES += "virtual/webruntime"
 RPROVIDES_${PN} += "virtual/webruntime"
 
 SRC_URI = "git://github.com/webosose/${PN}.git;branch=@1.agl;protocol=https"
+
+SRC_URI += "file://0001-Used-new-WindowManager-APIs.patch"
+
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
 
