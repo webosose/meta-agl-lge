@@ -10,7 +10,6 @@ S = "${WORKDIR}/git"
 EXTRA_OECONF += " \
 	--enable-filter \
 	--enable-transparent \
-	--disable-regexcheck \
 	--enable-reverse \
 	--enable-upstream \
 	--enable-xtinyproxy \
