@@ -17,3 +17,5 @@ EXTRA_OECONF += " \
 	"
 
 inherit autotools
+
+FILES_${PN} += "${datadir}/tinyproxy/*"
