@@ -3,7 +3,7 @@ HOMEPAGE = "https://tinyproxy.github.io/"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 
-SRC_URI = "git://github.com/Igalia/${PN}.git;branch=wam-proxy;protocol=https;rev=917ef9eec23b63015b5e20e9c7b9350c08c55512 \
+SRC_URI = "git://github.com/Igalia/${PN}.git;branch=wam-proxy;protocol=https;rev=feb6e92d593e8b073c33cb2719b0f4c97b8626b0 \
 		   file://disable-documentation.patch"
 S = "${WORKDIR}/git"
 
