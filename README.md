@@ -14,7 +14,7 @@ Add this library with feature 'agl-demo-wam'
 1. Fetch AGL eel with repo tool.
 
 ```bash
-repo init -b eel -m eel_5.0.3.xml -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+repo init -b eel -m eel_5.1.0.xml -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
 repo sync
 ```
 
@@ -73,15 +73,15 @@ URI: https://github.com/meta-qt5/meta-qt5.git
 
 URI: https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl
 > branch:   eel
-> tested revision: d6edc2872b1fc53f93607e7e38dc3ae87e12128c
+> tested revision: eel_5.1.0
 
 URI: https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl-devel
 > branch:   eel
-> tested revision: eel-5.0.2
+> tested revision: eel_5.1.0
 
 URI: https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl-demo
 > branch:   eel
-> tested revision: 9dfac4c2eb8291ecca449791dea66c389da1580a
+> tested revision: eel_5.1.0
 
 URI: https://github.com/01org/meta-intel-iot-security
 > tested revision: 20bbb97f6d5400b126ae96ef446c3e60c7e16285
