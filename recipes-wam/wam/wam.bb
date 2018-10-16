@@ -14,7 +14,10 @@ RPROVIDES_${PN} += "virtual/webruntime"
 
 SRC_URI = "git://github.com/Igalia/${PN}.git;branch=flounder;protocol=https"
 
-SRC_URI += "file://0001-Used-new-WindowManager-APIs.patch"
+SRC_URI += "\
+    file://0001-Used-new-WindowManager-APIs.patch \
+    file://0001-Update-user-directory.patch \
+"
 
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
