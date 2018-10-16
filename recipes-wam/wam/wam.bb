@@ -12,7 +12,7 @@ PR="r0"
 PROVIDES += "virtual/webruntime"
 RPROVIDES_${PN} += "virtual/webruntime"
 
-SRC_URI = "git://github.com/webosose/${PN}.git;branch=@1.agl;protocol=https"
+SRC_URI = "git://github.com/Igalia/${PN}.git;branch=flounder;protocol=https"
 
 SRC_URI += "file://0001-Used-new-WindowManager-APIs.patch"
 
