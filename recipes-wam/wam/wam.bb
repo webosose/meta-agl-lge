@@ -48,5 +48,6 @@ pkg_postinst_${PN}_append() {
     chsmack -a "*" /usr/lib/webappmanager/plugins/libwebappmgr-default-plugin.so
 }
 
+RDEPENDS_${PN} += "wam-tinyproxy"
 FILES_${PN} += "${sysconfdir}/init ${sysconfdir}/wam ${libdir}/webappmanager/plugins/*.so ${systemd_system_unitdir}"
 
