@@ -7,7 +7,7 @@ DEPENDS_append = " af-main-native"
 # for bindings  af-binder is required.
 DEPENDS_append = " af-binder"
 
-SRC_URI = "git://github.com/Igalia/${PN}.git;branch=flounder;protocol=https"
+SRC_URI = "git://github.com/webosose/${PN}.git;branch=@1.agl.flounder;protocol=https"
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
 

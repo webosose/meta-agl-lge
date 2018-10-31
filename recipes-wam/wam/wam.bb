@@ -12,7 +12,7 @@ PR="r0"
 PROVIDES += "virtual/webruntime"
 RPROVIDES_${PN} += "virtual/webruntime"
 
-SRC_URI = "git://github.com/Igalia/${PN}.git;branch=flounder;protocol=https"
+SRC_URI = "git://github.com/webosose/${PN}.git;branch=@1.agl.flounder;protocol=https"
 S = "${WORKDIR}/git"
 SRCREV = "${AUTOREV}"
 
