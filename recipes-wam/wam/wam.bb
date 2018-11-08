@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 inherit qmake5
 
-DEPENDS = "qtbase glib-2.0 chromium53 wayland-ivi-extension libhomescreen libwindowmanager"
+DEPENDS = "qtbase glib-2.0 jsoncpp chromium53 wayland-ivi-extension libhomescreen libwindowmanager"
 
 PR="r0"
 
