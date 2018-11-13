@@ -27,5 +27,6 @@ RDEPENDS_${PN} += " \
     chromium53-browser-service \
     wam \
     afm-widget-examples \
+    nano \
     tzdata \
     "
