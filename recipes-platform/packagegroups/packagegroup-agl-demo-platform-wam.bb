@@ -27,6 +27,10 @@ RDEPENDS_${PN} += " \
     chromium53-browser-service \
     wam \
     afm-widget-examples \
+    nodejs \
+    nodejs-npm \
+    git \
+    git-perltools \
     nano \
     tzdata \
     "
