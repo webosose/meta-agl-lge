@@ -26,6 +26,7 @@ RDEPENDS_${PN} += " \
 RDEPENDS_${PN} += " \
     chromium53-browser-service \
     wam \
+    wamdevmode \
     afm-widget-examples \
     nodejs \
     nodejs-npm \
