@@ -14,7 +14,7 @@ Add this library with feature 'agl-demo-wam'
 1. Fetch AGL flounder with repo tool.
 
 ```bash
-repo init -b flounder -m flounder_6.0.2.xml -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
+repo init -b guppy -u https://gerrit.automotivelinux.org/gerrit/AGL/AGL-repo
 repo sync
 ```
 
