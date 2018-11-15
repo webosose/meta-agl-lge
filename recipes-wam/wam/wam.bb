@@ -25,13 +25,13 @@ OE_QMAKE_CXXFLAGS += "-Wno-unused-variable"
 do_install_append() {
     install -d ${D}${sysconfdir}/wam
     install -v -m 644 ${S}/files/launch/security_policy.conf ${D}${sysconfdir}/wam/security_policy.conf
-    install -d ${D}${systemd_system_unitdir}
-    install -v -m 644 ${S}/files/launch/WebAppMgr.service ${D}${systemd_system_unitdir}/WebAppMgr.service
+    install -d ${D}${systemd_user_unitdir}
+    install -v -m 644 ${S}/files/launch/WebAppMgr.service ${D}${systemd_user_unitdir}/WebAppMgr.service
     install -d ${D}${sysconfdir}/default/
     install -v -m 644 ${S}/files/launch/WebAppMgr.env ${D}${sysconfdir}/default/WebAppMgr.env
     ln -snf WebAppMgr ${D}${bindir}/web-runtime
-    install -d ${D}${sysconfdir}/systemd/system/multi-user.target.wants/
-    ln -snf /lib/systemd/system/WebAppMgr.service ${D}${sysconfdir}/systemd/system/multi-user.target.wants/WebAppMgr.service
+    install -d ${D}${sysconfdir}/systemd/user/default.target.wants
+    ln -sf ${systemd_user_unitdir}/WebAppMgr.service ${D}${sysconfdir}/systemd/user/default.target.wants
 }
 
 pkg_postinst_${PN}_append() {
@@ -42,5 +42,5 @@ pkg_postinst_${PN}_append() {
 }
 
 RDEPENDS_${PN} += "wam-tinyproxy"
-FILES_${PN} += "${sysconfdir}/init ${sysconfdir}/wam ${libdir}/webappmanager/plugins/*.so ${systemd_system_unitdir}"
+FILES_${PN} += "${sysconfdir}/init ${sysconfdir}/wam ${libdir}/webappmanager/plugins/*.so ${systemd_user_unitdir}"
 
