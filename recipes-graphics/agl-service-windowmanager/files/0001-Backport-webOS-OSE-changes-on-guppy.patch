@@ -1,25 +1,19 @@
-From d60318a2de1f6258873676188adb00e8a877ca67 Mon Sep 17 00:00:00 2001
+From b5c13ed1b8d773cc47249610a958091063c7b3be Mon Sep 17 00:00:00 2001
 From: Sebastien Douheret <sebastien.douheret@iot.bzh>
-Date: Thu, 13 Sep 2018 22:56:10 +0200
-Subject: [PATCH] Backport webOS OSE changes on ff
+Date: Thu, 15 Nov 2018 11:52:31 +0100
+Subject: Backport webOS OSE changes on guppy
 
-Change-Id: Id655177c1b5b089da739ae2565ebc7ef6d5e2112
-Signed-off-by: Sebastien Douheret <sebastien.douheret@iot.bzh>
----
- layers.json                | 8 +++++++-
- policy_manager/db/roles.db | 2 +-
- 2 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/layers.json b/layers.json
-index fddd258..7a0b6eb 100644
+index 44e2adb..8f94d7b 100644
 --- a/layers.json
 +++ b/layers.json
 @@ -20,7 +20,7 @@
           "comment": "FarHomeScreen is the part of HomeScreen. The z order of this layer is lower than NearHomeScreen"
        },
        {
--         "role": "music|video|browser|radio|phone|map|hvac|settings|dashboard|poi|mixer|sdl|launcher|fallback",
-+         "role": "^WebApp.*|music|video|browser|radio|phone|map|hvac|settings|dashboard|poi|mixer|sdl|launcher|fallback",
+-         "role": "music|video|browser|radio|phone|navigation|map|hvac|settings|dashboard|poi|mixer|sdl|launcher|fallback",
++         "role": "^WebApp.*|music|video|browser|radio|phone|navigation|map|hvac|settings|dashboard|poi|mixer|sdl|launcher|fallback",
           "name": "Apps",
           "layer_id": 1001,
           "comment": "Range of IDs that will always be placed on layer 1001"
@@ -37,18 +31,18 @@ index fddd258..7a0b6eb 100644
           "role": "^on_screen.*",
           "name": "OnScreen",
 diff --git a/policy_manager/db/roles.db b/policy_manager/db/roles.db
-index 5d31aea..f0d1b20 100644
+index 184e602..f4f186b 100644
 --- a/policy_manager/db/roles.db
 +++ b/policy_manager/db/roles.db
 @@ -8,7 +8,7 @@
      },
      {
          "category": "debug",
--        "role": "launcher | map | poi | browser | sdl | mixer | radio | hvac | debug | phone | video | music | settings | dashboard | fallback",
-+        "role": "webapps | launcher | map | poi | browser | sdl | mixer | radio | hvac | debug | phone | video | music | settings | dashboard | fallback",
+-        "role": "launcher | navigation | map | poi | browser | sdl | mixer | radio | hvac | debug | phone | video | music | settings | dashboard | fallback",
++        "role": "webapps | launcher | navigation | map | poi | browser | sdl | mixer | radio | hvac | debug | phone | video | music | settings | dashboard | fallback",
          "area": "normal.full | split.main | split.sub | fullscreen",
          "layer": "apps",
      },
 -- 
-2.16.4
+2.17.1
 
