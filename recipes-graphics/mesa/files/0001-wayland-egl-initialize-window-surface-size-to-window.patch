@@ -1,0 +1,58 @@
+From 7210f5ad4516016b15850506f473499ea6dee023 Mon Sep 17 00:00:00 2001
+From: "Juan A. Suarez Romero" <jasuarez@igalia.com>
+Date: Mon, 4 Jun 2018 10:22:49 +0000
+Subject: wayland/egl: initialize window surface size to window size
+
+When creating a windows surface with eglCreateWindowSurface(), the
+width and height returned by eglQuerySurface(EGL_{WIDTH,HEIGHT}) is
+invalid until buffers are updated (like calling glClear()).
+
+But according to EGL 1.5 spec, section 3.5.6 ("Surface Attributes"):
+
+  "Querying EGL_WIDTH and EGL_HEIGHT returns respectively the width and
+   height, in pixels, of the surface. For a window or pixmap surface,
+   these values are initially equal to the width and height of the
+   native window or pixmap with respect to which the surface was
+   created"
+
+This fixes dEQP-EGL.functional.color_clears.* CTS tests
+
+v2:
+- Do not modify attached_{width,height} (Daniel)
+- Do not update size on resizing window (Brendan)
+
+CC: Daniel Stone <daniel@fooishbar.org>
+CC: Brendan King <brendan.king@imgtec.com>
+CC: mesa-stable@lists.freedesktop.org
+Tested-by: Eric Engestrom <eric@engestrom.ch>
+Tested-by: Chad Versace <chadversary@chromium.org>
+Reviewed-by: Chad Versace <chadversary@chromium.org>
+Reviewed-by: Daniel Stone <daniels@collabora.com>
+
+diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
+index b8af6ef2531..966f483abdd 100644
+--- a/src/egl/drivers/dri2/platform_wayland.c
++++ b/src/egl/drivers/dri2/platform_wayland.c
+@@ -146,6 +146,9 @@ dri2_wl_create_window_surface(_EGLDriver *drv, _EGLDisplay *disp,
+       goto cleanup_surf;
+    }
+ 
++   dri2_surf->base.Width = window->width;
++   dri2_surf->base.Height = window->height;
++
+    dri2_surf->wl_win = window;
+    dri2_surf->wl_queue = wl_display_create_queue(dri2_dpy->wl_dpy);
+    if (!dri2_surf->wl_queue) {
+@@ -182,9 +185,6 @@ dri2_wl_create_window_surface(_EGLDriver *drv, _EGLDisplay *disp,
+    dri2_surf->wl_win->private = dri2_surf;
+    dri2_surf->wl_win->destroy_window_callback = destroy_window_callback;
+ 
+-   dri2_surf->base.Width =  -1;
+-   dri2_surf->base.Height = -1;
+-
+    config = dri2_get_dri_config(dri2_conf, EGL_WINDOW_BIT,
+                                 dri2_surf->base.GLColorspace);
+ 
+-- 
+2.17.1
+

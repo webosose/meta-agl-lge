@@ -1,0 +1,79 @@
+From 32a0794e004359d2150e0e79cc82b76876b89613 Mon Sep 17 00:00:00 2001
+From: "Juan A. Suarez Romero" <jasuarez@igalia.com>
+Date: Wed, 6 Jun 2018 10:13:05 +0000
+Subject: wayland/egl: update surface size on window resize
+
+According to EGL 1.5 spec, section 3.10.1.1 ("Native Window Resizing"):
+
+  "If the native window corresponding to _surface_ has been resized
+   prior to the swap, _surface_ must be resized to match. _surface_ will
+   normally be resized by the EGL implementation at the time the native
+   window is resized. If the implementation cannot do this transparently
+   to the client, then *eglSwapBuffers* must detect the change and
+   resize surface prior to copying its pixels to the native window."
+
+So far, resizing a native window in Wayland/EGL was interpreted in Mesa
+as a request to resize, which is not executed until the first draw call.
+And hence, surface size is not updated until executing it. Thus,
+querying the surface size with eglQuerySurface() after a window resize
+still returns the old values.
+
+This commit updates the surface size values as soon as the resize is
+done, even when the real resize is done in the draw call. This makes the
+semantics that any native window resize request take effect inmediately,
+and if user calls eglQuerySurface() it will return the new resized
+values.
+
+v2: update surface size if there isn't a back surface (Daniel)
+
+CC: Daniel Stone <daniel@fooishbar.org>
+CC: mesa-stable@lists.freedesktop.org
+Reviewed-by: Daniel Stone <daniels@collabora.com>
+
+diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
+index 97c65e072be..52545163770 100644
+--- a/src/egl/drivers/dri2/platform_wayland.c
++++ b/src/egl/drivers/dri2/platform_wayland.c
+@@ -90,6 +90,17 @@ resize_callback(struct wl_egl_window *wl_win, void *data)
+    struct dri2_egl_display *dri2_dpy =
+       dri2_egl_display(dri2_surf->base.Resource.Display);
+ 
++   /* Update the surface size as soon as native window is resized; from user
++    * pov, this makes the effect that resize is done inmediately after native
++    * window resize, without requiring to wait until the first draw.
++    *
++    * A more detailed and lengthy explanation can be found at
++    * https://lists.freedesktop.org/archives/mesa-dev/2018-June/196474.html
++    */
++   if (!dri2_surf->back) {
++      dri2_surf->base.Width = wl_win->width;
++      dri2_surf->base.Height = wl_win->height;
++   }
+    dri2_dpy->flush->invalidate(dri2_surf->dri_drawable);
+ }
+ 
+@@ -467,8 +478,8 @@ update_buffers(struct dri2_egl_surface *dri2_surf)
+       dri2_egl_display(dri2_surf->base.Resource.Display);
+    int i;
+ 
+-   if (dri2_surf->base.Width != dri2_surf->wl_win->width ||
+-       dri2_surf->base.Height != dri2_surf->wl_win->height) {
++   if (dri2_surf->base.Width != dri2_surf->wl_win->attached_width ||
++       dri2_surf->base.Height != dri2_surf->wl_win->attached_height) {
+ 
+       dri2_wl_release_buffers(dri2_surf);
+ 
+@@ -1485,8 +1496,8 @@ swrast_update_buffers(struct dri2_egl_surface *dri2_surf)
+    if (dri2_surf->back)
+       return 0;
+ 
+-   if (dri2_surf->base.Width != dri2_surf->wl_win->width ||
+-       dri2_surf->base.Height != dri2_surf->wl_win->height) {
++   if (dri2_surf->base.Width != dri2_surf->wl_win->attached_width ||
++       dri2_surf->base.Height != dri2_surf->wl_win->attached_height) {
+ 
+       dri2_wl_release_buffers(dri2_surf);
+ 
+-- 
+2.17.1
+
