@@ -5,7 +5,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 inherit qmake5
 
-DEPENDS = "qtbase glib-2.0 jsoncpp chromium53 wayland-ivi-extension libhomescreen libwindowmanager"
+DEPENDS = "qtbase glib-2.0 jsoncpp boost chromium53 wayland-ivi-extension libhomescreen libwindowmanager"
+
 
 PR="r0"
 
@@ -41,6 +42,6 @@ pkg_postinst_${PN}_append() {
     chsmack -a "*" /usr/lib/webappmanager/plugins/libwebappmgr-default-plugin.so
 }
 
-RDEPENDS_${PN} += "wam-tinyproxy"
+RDEPENDS_${PN} += "boost-filesystem wam-tinyproxy"
 FILES_${PN} += "${sysconfdir}/init ${sysconfdir}/wam ${libdir}/webappmanager/plugins/*.so ${systemd_user_unitdir}"
 
