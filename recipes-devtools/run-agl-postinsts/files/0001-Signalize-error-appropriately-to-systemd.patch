@@ -1,0 +1,26 @@
+From: Andre Rosa <andre.rosa@lge.com>
+Date: Tue, 27 Nov 2018 15:00
+Subject: [PATCH] Signalize error appropriately to systemd
+
+If any of the post-install scripts fail during first boot,
+they should be retried on subsequent boots.
+
+That was not happenning because run-agl-postinsts.service
+would be disabled even if a post-install script failed as
+it always returned success on its execution.
+
+Now signalize properly when it sees an error executing a
+post-install script.
+
+Upstream-status: Pending
+
+---
+--- run-agl-postinsts.orig	2018-11-27 14:40:54.054058879 -0800
++++ run-agl-postinsts	2018-11-27 14:45:41.632924001 -0800
+@@ -44,4 +44,6 @@ exec_postinst_scriptlets
+ # since all postinstalls executed successfully, remove the postinstalls directory
+ if [ $remove_agl_pi_dir = 1 ]; then
+     rm -rf $agl_pi_dir
++    exit 0
+ fi
++exit 1
