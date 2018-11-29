@@ -243,6 +243,9 @@ install_chromium_browser() {
          xargs --arg-file=${SRC_DIR}/webos/install/default_browser/runtime.list cp -R --no-dereference --preserve=mode,links -v --target-directory=${D_DIR}
      fi
 
+    # AGL does not have PMLOG
+    sed -i.bak s/PmLogCtl.*// ${D_DIR}/run_webbrowser
+
     # To execute chromium in JAILER, Security Part needs permissions change
     # run_webbrowser: Script file for launching chromium
     chmod -v 755 ${D_DIR}/chrome
