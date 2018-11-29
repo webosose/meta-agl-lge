@@ -22,7 +22,7 @@ repo sync
 
 3. Call to aglsetup.sh adding agl-demo-wam as a feature.
 
-I.e. for Minnowboard:
+I.e. for MinnowBoard:
 
 ```bash
 source meta-agl/scripts/aglsetup.sh -m intel-corei7-64 -b build agl-devel agl-demo agl-appfw-smack agl-netboot agl-demo-wam
@@ -50,12 +50,19 @@ The drivers can be downloaded from https://www.renesas.com/en-us/solutions/autom
 bitbake agl-demo-platform-wam
 ```
 
+5. Flash the resulting build.
+
+I.e. for MinnowBoard use [meta-agl/scripts/mkefi-agl.sh](https://gerrit.automotivelinux.org/gerrit/#/admin/projects/AGL/meta-agl) by replacing /dev/sdX with your actual SD card device.
+```bash
+sudo ../meta-agl/scripts/mkefi-agl.sh tmp/deploy/images/intel-corei7-64/agl-demo-platform-wam-intel-corei7-64.wic.xz /dev/sdX
+```
+
 Supported Machines
 ------------------
 
 Reference hardware:
 
-* Minnowboard
+* MinnowBoard
 * Renesas R-car M3 board
 
 Layer dependencies
