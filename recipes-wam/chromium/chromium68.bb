@@ -255,20 +255,6 @@ install_chromium_browser() {
     configure_browser_settings
 }
 
-install_chromium_manifest() {
-    install -d ${D}${webos_sysbus_manifestsdir}
-    install -v -m 0644 ${WEBOS_SYSTEM_BUS_FILES_LOCATION}/${BPN}.manifest.json ${D}${webos_sysbus_manifestsdir}/${BPN}.manifest.json
-    if ! ${DEPLOY_BROWSER} ; then
-        # com.webos.app.browser is not shipped in webosose by chromium
-        # drop the role files for com.webos.app.browser from chromium manifest file
-        # else we see errors when ls-hubd starts parsing manifest file
-        manifest_file="${webos_sysbus_manifestsdir}/${BPN}.manifest.json"
-        sed -i '/\"\(.*\)com.webos.app.browser/d' ${D}${manifest_file}
-        sed -i -e 's:app-shell\.json\",:app-shell\.json\":g' ${D}${manifest_file}
-        sed -i -e 's:\"${webos_sysbus_prvservicesdir}\/${APP_SHELL_RUNTIME}\.service\",:\"${webos_sysbus_prvservicesdir}\/${APP_SHELL_RUNTIME}\.service\":g' ${D}${manifest_file}
-    fi
-}
-
 MKSNAPSHOT_PATH = ""
 MKSNAPSHOT_PATH_arm = "clang_x86_v8_arm/"
 MKSNAPSHOT_PATH_aarch64 = "clang_x64_v8_arm64/"
@@ -302,10 +288,7 @@ install_webruntime() {
 
 do_install() {
     install_webruntime
-    if ${DEPLOY_BROWSER} ; then
-      install_chromium_browser
-    fi
-    install_chromium_manifest
+    install_chromium_browser
 }
 
 WEBOS_SYSTEM_BUS_DIRS_LEGACY_BROWSER_APPLICATION = " \
