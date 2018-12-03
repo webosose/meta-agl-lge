@@ -53,6 +53,7 @@ GYP_DEFINES = "\
     use_ash=0\
     use_aura=1\
     use_cups=0\
+    use_data_device_manager=1\
     use_gnome_keyring=0\
     use_ibus=0\
     use_kerberos=0\
