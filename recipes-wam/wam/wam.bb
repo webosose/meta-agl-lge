@@ -19,7 +19,7 @@ SRCREV = "${AUTOREV}"
 EXTRA_QMAKEVARS_PRE += "CONFIG_BUILD+=agl_service"
 EXTRA_QMAKEVARS_PRE += "PREFIX=/usr"
 EXTRA_QMAKEVARS_PRE += "PLATFORM=${@'PLATFORM_' + '${DISTRO}'.upper().replace('-', '_')}"
-EXTRA_QMAKEVARS_PRE += "CHROMIUM_SRC_DIR=${STAGING_INCDIR}/chromium53"
+EXTRA_QMAKEVARS_PRE += "CHROMIUM_SRC_DIR=${STAGING_INCDIR}/chromium68"
 OE_QMAKE_CXXFLAGS += "-Wno-unused-variable"
 
 do_install_append() {
