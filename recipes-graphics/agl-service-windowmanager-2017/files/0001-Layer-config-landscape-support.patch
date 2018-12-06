@@ -43,12 +43,12 @@ index 230da55..09908c9 100644
 +         "role": "^WebApp.*",
 +         "name": "webapps",
 +         "layer_id": 1002,
-+         "area": { "type": "rect", "rect": { "x": 180, "y": 0, "width": -181, "height": -1 } },
++         "area": { "type": "rect", "rect": { "x": 0, "y": 0, "width": -1, "height": -1 } },
 +         "comment": "Range of IDs that will always be placed on layer 1002, negative rect values are interpreted as output_size.dimension - $value"
 +      },
        {
           "role": "^OnScreen.*",
           "name": "popups",
--- 
+--
 2.17.1
 
