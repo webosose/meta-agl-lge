@@ -132,6 +132,7 @@ GN_ARGS += "\
     disable_ftp_support=true\
     enable_print_preview=false\
     enable_remoting=false\
+    use_glib=true\
     use_gnome_keyring=false\
     use_pulseaudio=false\
 "
