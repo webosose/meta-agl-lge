@@ -84,7 +84,6 @@ do_aglwgt_package()  {
   # package communication-server
   install -v -m 644 ${WORKDIR}/config-communication-server.xml ${S}/communication-server/config.xml
   install -v -m 644 ${WORKDIR}/icon-communication-server.png ${S}/communication-server/icon.png
-  install -v -m 755 ${WORKDIR}/agate-communication-server ${S}/communication-server/agate-communication-server
   cd ${S}/communication-server
   ${STAGING_BINDIR_NATIVE}/zip -r ${B}/package/agate-communication-server.wgt *
 
