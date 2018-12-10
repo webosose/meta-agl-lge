@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="agate-communication-server" version="1.0.0">
+  <name>Agate communication server</name>
+  <icon src="icon.png"/>
+  <content src="agate-communication-server" type="application/vnd.agl.native"/>
+  <description>Agate communication server</description>
+  <author>LGE-SVL</author>
+  <license>CLOSED</license>
+  <feature name="urn:AGL:widget:required-permission">
+    <param name="urn:AGL:permission::public:no-htdocs" value="required" />
+    <param name="urn:AGL:permission::public:hidden" value="required" />
+  </feature>
+  <feature name="urn:AGL:widget:required-api">
+    <param name="homescreen" value="ws" />
+    <param name="windowmanager" value="ws" />
+  </feature>
+</widget>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="webapps-agate-copilot" version="1.0.0">
+  <name>Agate AGL CoPilot</name>
+  <icon src="icon.png"/>
+  <content src="index.html" type="text/html"/>
+  <description>Agate AGL CoPilot</description>
+  <author>LGE-SVL</author>
+  <license>CLOSED</license>
+  <feature name="urn:AGL:widget:required-permission">
+    <param name="urn:AGL:permission::public:no-htdocs" value="required" />
+  </feature>
+  <feature name="urn:AGL:widget:required-api">
+    <param name="homescreen" value="ws" />
+    <param name="windowmanager" value="ws" />
+  </feature>
+</widget>

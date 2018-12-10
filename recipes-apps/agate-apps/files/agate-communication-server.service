@@ -1,11 +1,10 @@
 [Unit]
-AssertPathExists=/home/root/app-data/agate-apps/communication-server
 After=afm-service-windowmanager-service-2017@0.1.service afm-appli-homescreen-2017@0.1.service
 Wants=afm-service-windowmanager-service-2017@0.1.service afm-appli-homescreen-2017@0.1.service
 
 [Service]
 Type=simple
-WorkingDirectory=/home/root/app-data/agate-apps/communication-server
+WorkingDirectory=/var/local/lib/afm/applications/agate-communication-server/1.0
 ExecStart=/usr/bin/npm run start
 Restart=always
 PrivateTmp=true
