@@ -26,7 +26,7 @@ DEPENDS = "virtual/gettext wayland wayland-native pixman freetype fontconfig ope
 PROVIDES = "${BROWSER_APPLICATION}"
 
 SRC_URI = "\
-    git://github.com/hferreiro/${PN};branch=@15.agl.flounder \
+    git://github.com/webosose/${PN};branch=@15.agl.flounder;protocol=https \
     git://github.com/webosose/v8;destsuffix=git/src/v8 \
 "
 SRCREV="${AUTOREV}"
