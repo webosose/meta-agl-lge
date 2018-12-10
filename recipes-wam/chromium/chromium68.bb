@@ -68,7 +68,6 @@ PACKAGECONFIG[jumbo] = "use_jumbo_build=true jumbo_file_merge_limit=${JUMBO_FILE
 PACKAGECONFIG[lttng] = "use_lttng=true,use_lttng=false,lttng-ust,lttng-tools lttng-modules babeltrace"
 
 #custom_toolchain=\"//build/toolchain/linux/unbundle:default\"
-#v8_snapshot_toolchain=\"//build/toolchain/yocto:clang_yocto_native\"
 GN_ARGS = "\
     cros_host_ar=\"${BUILD_AR}\"\
     cros_host_cc=\"${BUILD_CC}\"\
@@ -93,7 +92,6 @@ GN_ARGS = "\
     is_chrome_cbe=true\
     use_cups=false\
     use_custom_libcxx=false\
-    use_custom_libcxx_for_host=true\
     use_kerberos=false\
     use_neva_media=false\
     use_ozone=true\
@@ -105,12 +103,29 @@ GN_ARGS = "\
     ${PACKAGECONFIG_CONFARGS}\
 "
 
-# TODO: drop this after we migrate to ubuntu 16.04 or above
-GN_ARGS += "\
+# We need this for cross to 32 bit architectures, as we do not have a way
+# to retrieve a host gcc for 32 bits in yocto
+GN_ARGS_TOOLCHAIN = "\
     is_host_clang=true\
     host_toolchain=\"//build/toolchain/yocto:clang_yocto_native\" \
     fatal_linker_warnings=false\
+    use_custom_libcxx_for_host=true\
 "
+
+# But for x86-64 previous setting fails in torque, so this makes build use
+# gcc on host, and use host toolchain for v8 snapshot and torque
+GN_ARGS_TOOLCHAIN_x86-64 = "\
+    is_host_clang=false\
+    use_custom_libcxx_for_host=false\
+    v8_snapshot_toolchain=\"//build/toolchain/cros:host\" \
+    cros_v8_snapshot_is_clang=false\
+    cros_v8_snapshot_ar=\"${BUILD_AR}\"\
+    cros_v8_snapshot_cc=\"${BUILD_CC}\"\
+    cros_v8_snapshot_cxx=\"${BUILD_CXX}\"\
+    cros_v8_snapshot_extra_ldflags=\"${BUILD_LDFLAGS}\"\
+"
+
+GN_ARGS += "${GN_ARGS_TOOLCHAIN}"
 
 python do_write_toolchain_file () {
     """Writes a BUILD.gn file for Yocto detailing its toolchains."""
