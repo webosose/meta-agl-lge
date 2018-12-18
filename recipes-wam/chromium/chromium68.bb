@@ -54,9 +54,13 @@ TARGET = "${WEBRUNTIME_BUILD_TARGET} ${BROWSER_APP_BUILD_TARGET}"
 WEBOS_SYSTEM_BUS_FILES_LOCATION = "${S}/files/sysbus"
 
 PACKAGECONFIG ?= "jumbo"
-# Options to enable debug build. Add this PACKAGECONFIG to webos-local.conf to enable debug build
+
+# Options to enable debug/debug-webcore build.
+# Add the following line to local.conf (or local.dev.inc) to enable them:
+#   PACKAGECONFIG_append_pn-chromium68 = " debug debug-webcore"
 # By default debug is completely disabled to speed up build
-PACKAGECONFIG[debug] = "is_debug=true remove_webcore_debug_symbols=false symbol_level=1,is_debug=false remove_webcore_debug_symbols=true symbol_level=0"
+PACKAGECONFIG[debug] = "is_debug=false is_component_build=false symbol_level=2, is_debug=false symbol_level=0"
+PACKAGECONFIG[debug-webcore] = "remove_webcore_debug_symbols=false,remove_webcore_debug_symbols=true"
 
 # Set a default value for jumbo file merge of 8. This should be good for build
 # servers and workstations with a big number of cores. In case build is
