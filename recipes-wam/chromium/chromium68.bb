@@ -76,6 +76,12 @@ PACKAGECONFIG[lttng] = "use_lttng=true,use_lttng=false,lttng-ust,lttng-tools ltt
 # See https://github.com/igel-oss/meta-browser-hwdecode/tree/igalia-chromium71.
 PACKAGECONFIG[use-linux-v4l2] = "use_v4l2_codec=true use_v4lplugin=true use_linux_v4l2_only=true"
 
+PACKAGECONFIG[use-upstream-wayland] = " \
+        ozone_platform_wayland_external=false ozone_platform_wayland=true \
+        use_system_minigbm=true, \
+        ozone_platform_wayland_external=true ozone_platform_wayland=false \
+"
+
 #custom_toolchain=\"//build/toolchain/linux/unbundle:default\"
 GN_ARGS = "\
     cros_host_ar=\"${BUILD_AR}\"\
@@ -91,7 +97,6 @@ GN_ARGS = "\
     is_cross_linux_build=true\
     is_clang=false\
     ozone_auto_platforms=false\
-    ozone_platform_wayland_external=true\
     proprietary_codecs=true\
     target_os=\"linux\"\
     target_sysroot=\"${STAGING_DIR_HOST}\"\
