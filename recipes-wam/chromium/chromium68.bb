@@ -53,7 +53,7 @@ TARGET = "${WEBRUNTIME_BUILD_TARGET} ${BROWSER_APP_BUILD_TARGET}"
 # Skip do_install_append of webos_system_bus. It is not compatible with this component.
 WEBOS_SYSTEM_BUS_FILES_LOCATION = "${S}/files/sysbus"
 
-PACKAGECONFIG ?= "jumbo"
+PACKAGECONFIG ?= "jumbo use-upstream-wayland"
 
 # Options to enable debug/debug-webcore build.
 # Add the following line to local.conf (or local.dev.inc) to enable them:
