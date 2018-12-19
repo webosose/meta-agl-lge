@@ -71,6 +71,11 @@ PACKAGECONFIG[jumbo] = "use_jumbo_build=true jumbo_file_merge_limit=${JUMBO_FILE
 
 PACKAGECONFIG[lttng] = "use_lttng=true,use_lttng=false,lttng-ust,lttng-tools lttng-modules babeltrace"
 
+# Chromium can use v4l2 device for hardware accelerated video decoding on such boards as Renesas R-car M3, for example.
+# In case of R-car m3, additional patches are required for gstreamer and v4l2apps.
+# See https://github.com/igel-oss/meta-browser-hwdecode/tree/igalia-chromium71.
+PACKAGECONFIG[use-linux-v4l2] = "use_v4l2_codec=true use_v4lplugin=true use_linux_v4l2_only=true"
+
 #custom_toolchain=\"//build/toolchain/linux/unbundle:default\"
 GN_ARGS = "\
     cros_host_ar=\"${BUILD_AR}\"\
