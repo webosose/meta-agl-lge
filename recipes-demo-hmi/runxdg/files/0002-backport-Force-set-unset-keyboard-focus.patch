@@ -1,0 +1,156 @@
+From bbbc4e445af8aa8ac3c5bf0534d6620f199a6f4d Mon Sep 17 00:00:00 2001
+From: Nick Diego Yamane <nick@igalia.com>
+Date: Thu, 20 Dec 2018 20:55:11 -0400
+Subject: [PATCH 2/2] [backport] Force set/unset keyboard focus
+
+This is work around which control keyboard focus for some
+applications on behalf of windowmanager or LayerManagerControl.
+
+Cherry-picked from (guppy branch):
+https://gerrit.automotivelinux.org/gerrit/gitweb?p=staging/xdg-launcher.git;a=commit;h=415e5cbb5787aa0429558b5256bf912231297431
+
+Change-Id: I8e73b3fd34c076d1023060dbeef7225eebb243ca
+Original Author: wang_zhiqiang <wang_zhiqiang@dl.cn.nexty-ele.com>
+Signed-off-by: Nick Diego Yamane <nick@igalia.com>
+---
+ CMakeLists.txt |  3 +++
+ src/runxdg.cpp | 26 ++++++++++++++++++--------
+ src/runxdg.hpp |  5 ++++-
+ 3 files changed, 25 insertions(+), 9 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index af5e6b7b7ff5..0166ece32898 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -10,6 +10,7 @@ find_package(PkgConfig REQUIRED)
+ pkg_check_modules(GLIB REQUIRED glib-2.0)
+ pkg_check_modules(GIO REQUIRED gio-2.0)
+ pkg_check_modules(ILMCONTROL REQUIRED ilmControl)
++pkg_check_modules(ILMINPUT REQUIRED ilmInput)
+ 
+ # No configuration
+ # configure_file (
+@@ -22,6 +23,7 @@ pkg_check_modules(ILMCONTROL REQUIRED ilmControl)
+ include_directories(
+   "include"
+   "${ILMCONTROL_INCLUDE_DIRS}"
++  "${ILMINPUT_INCLUDE_DIRS}"
+   "${GLIB_INCLUDE_DIRS}"
+   "${GIO_INCLUDE_DIRS}"
+   )
+@@ -34,6 +36,7 @@ SET(LIBRARIES
+   windowmanager
+   homescreen
+   ${ILMCONTROL_LIBRARIES}
++  ${ILMINPUT_LIBRARIES}
+   afbwsc
+   json-c
+   pthread
+diff --git a/src/runxdg.cpp b/src/runxdg.cpp
+index 1b9c08c7ac2f..33d5324d7c14 100644
+--- a/src/runxdg.cpp
++++ b/src/runxdg.cpp
+@@ -84,7 +84,8 @@ void RunXDG::notify_ivi_control_cb (ilmObjectType object, t_ilm_uint id,
+     m_launcher->register_surfpid(surf_pid);
+     if (m_launcher->m_rid &&
+         surf_pid == m_launcher->find_surfpid_by_rid(m_launcher->m_rid)) {
+-      setup_surface(id);
++      m_ivi_id = id;
++      setup_surface();
+     }
+     m_surfaces[surf_pid] = id;
+   } else if (object == ILM_LAYER) {
+@@ -280,12 +281,16 @@ int RunXDG::init_wm (void)
+     return -1;
+   }
+ 
+-  std::function< void(json_object*) > h_active = [](json_object* object) {
++  std::function< void(json_object*) > h_active = [this](json_object* object) {
+     AGL_DEBUG("Got Event_Active");
++    t_ilm_surface s_ids[1] = { this->m_ivi_id };
++    ilm_setInputFocus(s_ids, 1, ILM_INPUT_DEVICE_KEYBOARD, ILM_TRUE);
+   };
+ 
+-  std::function< void(json_object*) > h_inactive = [](json_object* object) {
++  std::function< void(json_object*) > h_inactive = [this](json_object* object) {
+     AGL_DEBUG("Got Event_Inactive");
++    t_ilm_surface s_ids[1] = { this->m_ivi_id };
++    ilm_setInputFocus(s_ids, 1, ILM_INPUT_DEVICE_KEYBOARD, ILM_FALSE);
+   };
+ 
+   std::function< void(json_object*) > h_visible = [](json_object* object) {
+@@ -451,13 +456,13 @@ RunXDG::RunXDG (int port, const char* token, const char* id)
+   AGL_DEBUG("RunXDG created.");
+ }
+ 
+-void RunXDG::setup_surface (int id)
++void RunXDG::setup_surface (void)
+ {
+-  std::string sid = std::to_string(id);
++  std::string sid = std::to_string(m_ivi_id);
+ 
+   // This surface is mine, register pair app_name and ivi id.
+-  AGL_DEBUG("requestSurfaceXDG(%s,%d)", m_role.c_str(), id);
+-  m_wm->requestSurfaceXDG(this->m_role.c_str(), id);
++  AGL_DEBUG("requestSurfaceXDG(%s,%d)", m_role.c_str(), m_ivi_id);
++  m_wm->requestSurfaceXDG(this->m_role.c_str(), (unsigned int)m_ivi_id);
+ 
+   if (m_pending_create) {
+     // Recovering 1st time tap_shortcut is dropped because
+@@ -556,6 +561,8 @@ void RunXDG::start (void)
+   AGL_DEBUG("waiting for notification: surafce created");
+   m_pending_create = true;
+ 
++  ilm_commitChanges();
++
+   // in case, target app has already run
+   if (m_launcher->m_rid) {
+     pid_t surf_pid = m_launcher->find_surfpid_by_rid(m_launcher->m_rid);
+@@ -567,10 +574,13 @@ void RunXDG::start (void)
+         int id = itr->second;
+         AGL_DEBUG("surface %d for <%s> already exists", id,
+                   m_role.c_str());
+-        setup_surface(id);
++        m_ivi_id = id;
++        setup_surface();
+       }
+     }
+   }
++
++  ilm_commitChanges();
+   m_launcher->loop(e_flag);
+ }
+ 
+diff --git a/src/runxdg.hpp b/src/runxdg.hpp
+index ce0c016ac981..595babe60246 100644
+--- a/src/runxdg.hpp
++++ b/src/runxdg.hpp
+@@ -30,6 +30,7 @@
+ #include <gio/gio.h>
+ 
+ #include <ilm/ilm_control.h>
++#include <ilm/ilm_input.h>
+ 
+ #include <libwindowmanager.h>
+ #include <libhomescreen.hpp>
+@@ -149,6 +150,8 @@ class RunXDG
+     LibHomeScreen *m_hs;
+     ILMControl *m_ic;
+ 
++    t_ilm_surface m_ivi_id;
++
+     std::map<int, int> m_surfaces;  // pair of <afm:rid, ivi:id>
+ 
+     bool m_pending_create = false;
+@@ -158,7 +161,7 @@ class RunXDG
+ 
+     int parse_config(const char *file);
+ 
+-    void setup_surface(int id);
++    void setup_surface(void);
+ };
+ 
+ #endif  // RUNXDG_HPP
+-- 
+2.20.1
+
