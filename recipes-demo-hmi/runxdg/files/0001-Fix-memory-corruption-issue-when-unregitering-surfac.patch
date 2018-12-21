@@ -1,0 +1,51 @@
+From 88b07927af3bba932cef6f388e1901886c252972 Mon Sep 17 00:00:00 2001
+From: Nick Diego Yamane <nickdiego@igalia.com>
+Date: Wed, 19 Dec 2018 03:00:30 -0400
+Subject: [PATCH] Fix memory corruption issue when unregitering surfaces
+
+- Iterator was being incremented twice, one when erase()
+  is called (implicit [1]) and another one just after to call erase
+  (explicitly), when unregitering a pid/surface_id.
+
+[1] https://www.techiedelight.com/remove-elements-vector-inside-loop-cpp
+
+Change-Id: Ia3cc3981480cf76b839043be49d257d5be011d60
+Signed-off-by: Nick Diego Yamane <nickdiego@igalia.com>
+---
+ src/runxdg.cpp | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/src/runxdg.cpp b/src/runxdg.cpp
+index 33d5324d7c14..3f2ecb208bda 100644
+--- a/src/runxdg.cpp
++++ b/src/runxdg.cpp
+@@ -28,6 +28,7 @@
+ #include <sys/time.h>
+ #include <sys/wait.h>
+ 
++#include <algorithm>
+ #include <cstdio>
+ 
+ #include "cpptoml/cpptoml.h"
+@@ -486,14 +487,10 @@ void POSIXLauncher::register_surfpid (pid_t surf_pid)
+ 
+ void POSIXLauncher::unregister_surfpid (pid_t surf_pid)
+ {
+-  auto itr = m_pid_v.begin();
+-  while (itr != m_pid_v.end()) {
+-    if (*itr == surf_pid) {
+-      m_pid_v.erase(itr++);
+-    } else {
+-      ++itr;
+-    }
+-  }
++  auto beg = m_pid_v.begin();
++  auto end = m_pid_v.end();
++  m_pid_v.erase(std::remove(beg, end, surf_pid), end);
++  AGL_DEBUG("Unregistered surface (id=%d sz=%u)", surf_pid, m_pid_v.size());
+ }
+ 
+ pid_t POSIXLauncher::find_surfpid_by_rid (pid_t rid)
+-- 
+2.20.1
+
