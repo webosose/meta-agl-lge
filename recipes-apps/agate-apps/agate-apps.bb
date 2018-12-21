@@ -60,12 +60,12 @@ do_compile() {
   # build console app
   cd ${S}/console
   ${STAGING_BINDIR_NATIVE}/npm install
-  ${STAGING_BINDIR_NATIVE}/npm run pack
+  ${STAGING_BINDIR_NATIVE}/npm run pack-p
 
   # build copilot app
   cd ${S}/copilot
   ${STAGING_BINDIR_NATIVE}/npm install
-  ${STAGING_BINDIR_NATIVE}/npm run pack
+  ${STAGING_BINDIR_NATIVE}/npm run pack-p
 }
 
 do_install_append() {
