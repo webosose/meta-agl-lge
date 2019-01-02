@@ -1,4 +1,4 @@
-From bbbc4e445af8aa8ac3c5bf0534d6620f199a6f4d Mon Sep 17 00:00:00 2001
+From e9e1d37d422da00f6b4c53fce9dccfd0ca7138db Mon Sep 17 00:00:00 2001
 From: Nick Diego Yamane <nick@igalia.com>
 Date: Thu, 20 Dec 2018 20:55:11 -0400
 Subject: [PATCH 2/2] [backport] Force set/unset keyboard focus
@@ -14,9 +14,9 @@ Original Author: wang_zhiqiang <wang_zhiqiang@dl.cn.nexty-ele.com>
 Signed-off-by: Nick Diego Yamane <nick@igalia.com>
 ---
  CMakeLists.txt |  3 +++
- src/runxdg.cpp | 26 ++++++++++++++++++--------
+ src/runxdg.cpp | 22 ++++++++++++++++------
  src/runxdg.hpp |  5 ++++-
- 3 files changed, 25 insertions(+), 9 deletions(-)
+ 3 files changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index af5e6b7b7ff5..0166ece32898 100644
@@ -47,10 +47,10 @@ index af5e6b7b7ff5..0166ece32898 100644
    json-c
    pthread
 diff --git a/src/runxdg.cpp b/src/runxdg.cpp
-index 1b9c08c7ac2f..33d5324d7c14 100644
+index 3ff942c1bdd1..356e24fbd25e 100644
 --- a/src/runxdg.cpp
 +++ b/src/runxdg.cpp
-@@ -84,7 +84,8 @@ void RunXDG::notify_ivi_control_cb (ilmObjectType object, t_ilm_uint id,
+@@ -83,7 +83,8 @@ void RunXDG::notify_ivi_control_cb (ilmObjectType object, t_ilm_uint id,
      m_launcher->register_surfpid(surf_pid);
      if (m_launcher->m_rid &&
          surf_pid == m_launcher->find_surfpid_by_rid(m_launcher->m_rid)) {
@@ -60,7 +60,7 @@ index 1b9c08c7ac2f..33d5324d7c14 100644
      }
      m_surfaces[surf_pid] = id;
    } else if (object == ILM_LAYER) {
-@@ -280,12 +281,16 @@ int RunXDG::init_wm (void)
+@@ -279,12 +280,16 @@ int RunXDG::init_wm (void)
      return -1;
    }
  
@@ -79,7 +79,7 @@ index 1b9c08c7ac2f..33d5324d7c14 100644
    };
  
    std::function< void(json_object*) > h_visible = [](json_object* object) {
-@@ -451,13 +456,13 @@ RunXDG::RunXDG (int port, const char* token, const char* id)
+@@ -471,9 +476,9 @@ RunXDG::RunXDG (int port, const char* token, const char* id)
    AGL_DEBUG("RunXDG created.");
  }
  
@@ -90,14 +90,8 @@ index 1b9c08c7ac2f..33d5324d7c14 100644
 +  std::string sid = std::to_string(m_ivi_id);
  
    // This surface is mine, register pair app_name and ivi id.
--  AGL_DEBUG("requestSurfaceXDG(%s,%d)", m_role.c_str(), id);
--  m_wm->requestSurfaceXDG(this->m_role.c_str(), id);
-+  AGL_DEBUG("requestSurfaceXDG(%s,%d)", m_role.c_str(), m_ivi_id);
-+  m_wm->requestSurfaceXDG(this->m_role.c_str(), (unsigned int)m_ivi_id);
- 
-   if (m_pending_create) {
-     // Recovering 1st time tap_shortcut is dropped because
-@@ -556,6 +561,8 @@ void RunXDG::start (void)
+   json_object *obj = json_object_new_object();
+@@ -588,6 +593,8 @@ void RunXDG::start (void)
    AGL_DEBUG("waiting for notification: surafce created");
    m_pending_create = true;
  
@@ -106,7 +100,7 @@ index 1b9c08c7ac2f..33d5324d7c14 100644
    // in case, target app has already run
    if (m_launcher->m_rid) {
      pid_t surf_pid = m_launcher->find_surfpid_by_rid(m_launcher->m_rid);
-@@ -567,10 +574,13 @@ void RunXDG::start (void)
+@@ -599,10 +606,13 @@ void RunXDG::start (void)
          int id = itr->second;
          AGL_DEBUG("surface %d for <%s> already exists", id,
                    m_role.c_str());
