@@ -1,0 +1,12 @@
+[Unit]
+Description="Sets the time from the network using NTP"
+Requires=weston.service
+After=weston.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/forcerdate.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
