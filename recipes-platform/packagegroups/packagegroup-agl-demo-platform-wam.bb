@@ -29,6 +29,7 @@ RDEPENDS_${PN} += " \
     wamdevmode \
     afm-widget-examples \
     agate-apps \
+    forcerdate \
     nodejs \
     nodejs-npm \
     git \
